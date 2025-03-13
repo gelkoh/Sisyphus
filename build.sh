@@ -3,4 +3,8 @@ clang \
     -std=c99 \
     -Wall \
     -Werror \
-    -Wextra
+    -Wextra \
+    -Wno-typedef-redefinition \
+    -Wno-error=typedef-redefinition \
+    $(pkg-config --cflags gtk4) \
+    $(pkg-config --libs gtk4)
