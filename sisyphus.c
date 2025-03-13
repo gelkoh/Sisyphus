@@ -13,14 +13,44 @@ static void activate_styles() {
 }
 
 static void activate(GtkApplication *app) {
-    GtkWidget *window;
+    // Create widgets
+    GtkWidget *window = gtk_application_window_new(app);
+    GtkWidget *center_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+    GtkWidget *timer_label_and_skip_button_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+    GtkWidget *timer_label = gtk_label_new("25:00");
+    GtkWidget *skip_button = gtk_button_new_with_label("x");
+    GtkWidget *play_pause_button = gtk_button_new_with_label("PLAY");
 
-    window = gtk_application_window_new(app);
-    gtk_widget_set_name(window, "window");
+    // Set widget options
     gtk_window_set_title(GTK_WINDOW(window), "🏺 Sisyphus – A Pomodoro Timer 🏺");
     gtk_widget_set_size_request(window, 400, 400);
-    gtk_window_present(GTK_WINDOW(window));
+    gtk_widget_set_hexpand(center_box, TRUE);
+    gtk_widget_set_vexpand(center_box, TRUE);
+    gtk_widget_set_halign(center_box, GTK_ALIGN_CENTER);
+    gtk_widget_set_valign(center_box, GTK_ALIGN_CENTER);
+    gtk_widget_set_halign(skip_button, GTK_ALIGN_END);
+    gtk_widget_set_valign(skip_button, GTK_ALIGN_START);
 
+    // Add classes to widgets for CSS styling
+    gtk_widget_add_css_class(skip_button, "button");
+    gtk_widget_add_css_class(play_pause_button, "button");
+
+    // Add specific names to widgets for CSS styling
+    gtk_widget_set_name(window, "window");
+    gtk_widget_set_name(center_box, "center-box");
+    gtk_widget_set_name(timer_label, "timer-label");
+    gtk_widget_set_name(skip_button, "skip-button");
+    gtk_widget_set_name(play_pause_button, "play-pause-button");
+
+    // Assemble the UI
+    gtk_window_set_child(GTK_WINDOW(window), center_box);
+    gtk_box_append(GTK_BOX(center_box), timer_label_and_skip_button_box);
+    gtk_box_append(GTK_BOX(timer_label_and_skip_button_box), timer_label);
+    gtk_box_append(GTK_BOX(timer_label_and_skip_button_box), skip_button);
+    gtk_box_append(GTK_BOX(center_box), play_pause_button);
+
+    // Present the window and activate the styles
+    gtk_window_present(GTK_WINDOW(window));
     activate_styles();
 }
 
