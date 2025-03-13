@@ -1,3 +1,33 @@
+:root {
+    --color-dark: #101010;
+    --color-light: #efefef;
+    --color-red: #c23b29;
+}
+
+.button {
+    padding: 0;
+    min-height: 0;
+    background: none;
+    outline: none;
+    border: none;
+}
+
 #window {
-    background: #000000;
+    background: var(--color-dark);
+    color: var(--color-light);
+}
+
+#timer-label {
+    font-size: 70px;
+    color: var(--color-red);
+}
+
+#skip-button {
+    font-size: 35px;
+    color: var(--color-red);
+}
+
+#play-pause-button {
+    font-size: 30px;
+    color: var(--color-light);
 }
