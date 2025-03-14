@@ -2,6 +2,25 @@
 #include <stdio.h>
 #include <gtk/gtk.h>
 
+bool is_paused = TRUE;
+
+GtkWidget *window;
+GtkWidget *center_box;
+GtkWidget *timer_label_and_skip_button_box;
+GtkWidget *timer_label;
+GtkWidget *skip_button;
+GtkWidget *play_pause_button;
+
+static void on_timer_toggle() {
+    if (is_paused) {
+        gtk_button_set_label(GTK_BUTTON(play_pause_button), "PAUSE");
+        is_paused = FALSE;
+    } else {
+        gtk_button_set_label(GTK_BUTTON(play_pause_button), "PLAY");
+        is_paused = TRUE;
+    }
+}
+
 static void activate_styles() {
     GtkCssProvider *css_provider = gtk_css_provider_new();
     gtk_css_provider_load_from_path(css_provider, "styles.css");
@@ -14,12 +33,12 @@ static void activate_styles() {
 
 static void activate(GtkApplication *app) {
     // Create widgets
-    GtkWidget *window = gtk_application_window_new(app);
-    GtkWidget *center_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-    GtkWidget *timer_label_and_skip_button_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
-    GtkWidget *timer_label = gtk_label_new("25:00");
-    GtkWidget *skip_button = gtk_button_new_with_label("x");
-    GtkWidget *play_pause_button = gtk_button_new_with_label("PLAY");
+    window = gtk_application_window_new(app);
+    center_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+    timer_label_and_skip_button_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+    timer_label = gtk_label_new("25:00");
+    skip_button = gtk_button_new_with_label("x");
+    play_pause_button = gtk_button_new_with_label("PLAY");
 
     // Set widget options
     gtk_window_set_title(GTK_WINDOW(window), "🏺 Sisyphus – A Pomodoro Timer 🏺");
@@ -30,6 +49,10 @@ static void activate(GtkApplication *app) {
     gtk_widget_set_valign(center_box, GTK_ALIGN_CENTER);
     gtk_widget_set_halign(skip_button, GTK_ALIGN_END);
     gtk_widget_set_valign(skip_button, GTK_ALIGN_START);
+    gtk_widget_set_halign(play_pause_button, GTK_ALIGN_CENTER);
+
+    // Add signals
+    g_signal_connect(play_pause_button, "clicked", G_CALLBACK(on_timer_toggle), NULL);
 
     // Add classes to widgets for CSS styling
     gtk_widget_add_css_class(skip_button, "button");
